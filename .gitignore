@@ -1,5 +1,5 @@
 # all data files
-data/**/*.mat
+data/
 
 # Windows default autosave extension
 *.asv
