@@ -30,6 +30,8 @@ set(gca,'fontsize',25)
 pbaspect([2.5,1,1])
 
 nexttile
+disp(strcat(num2str(sum(telapsed>5)),"/",...
+    num2str(size(telapsed,1))))
 b = bar(sum(telapsed>5)/size(telapsed,1)*100);
 b.FaceColor = 'flat';
 b.CData(1,:) = [41, 126, 194]/255;
@@ -52,6 +54,8 @@ set(gca,'fontsize',25)
 pbaspect([2.5,1,1])
 
 nexttile
+disp(strcat(num2str(sum(telapsed_grad>5)),"/",...
+    num2str(size(telapsed_grad,1))))
 b = bar(sum(telapsed_grad>5)/size(telapsed_grad,1)*100);
 b.FaceColor = 'flat';
 b.CData(1,:) = [41, 126, 194]/255;
