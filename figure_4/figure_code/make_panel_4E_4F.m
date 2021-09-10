@@ -28,8 +28,8 @@ pbaspect([4,1,1])
 
 nexttile
 hold on
-plot(recCmax,'color',[12 12 12]/18,'linewidth',2);
-plot(recFmax,'k','linewidth',2);
+plot(recCmax,'color',[12 12 12]/20,'linewidth',2);
+plot(recFmax,'color',[0.9290 0.6940 0.1250],'linewidth',2);
 xlim([1,length(recCmax)])
 ylim([1,100])
 yticks([1,50,100])
@@ -40,7 +40,7 @@ set(gca,'fontsize',17)
 pbaspect([4,1,1])
 box on
 
-saveas(gca,"panel_4E.svg")
+saveas(gca,"panel_4D.svg")
 
 %% panel F snapshots
 bdd = 18;
@@ -70,5 +70,24 @@ for ii = 1:4
     hold off
 end
 
-saveas(gca,"panel_4F.svg")
+saveas(gca,"panel_4E.svg")
+
+%% panel G
+figure(3)
+histogram(recCmax,30,'FaceColor',[12 12 12]/20,'EdgeColor','none',...
+    'Normalization','probability')
+hold on
+histogram(recFmax,11,'FaceColor',[0.9290 0.6940 0.1250],...
+    'EdgeColor','none','Normalization','probability')
+hold off
+ylim([0,0.3])
+xlabel("Membrane position (rad)")
+ylabel("Probability")
+legend("Ligand peak","Receptor peak",'fontsize',10)
+legend('boxoff')
+pbaspect([1,2,1])
+box off
+set(gca,'fontsize',12,'xticklabels',["-\pi","0","\pi"])
+saveas(gca,"panel_4G.svg")
+
 end

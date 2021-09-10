@@ -62,5 +62,5 @@ disp(mean(results.stat,1)')
 
 %% plotting 4E and 4F
 make_panel_4E_4F("kymograph_data")
-                 
+    
                  
