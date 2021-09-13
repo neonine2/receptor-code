@@ -47,11 +47,11 @@ hold on
 loglog(samplist, mean(uniflist,2),...
     'linewidth',1.5,'Color',[41, 126, 194]/255)
 hold off
-xlabel('Sampling rate (# samples per second)')
+xlabel('Sampling rate (per second)')
 ylabel('Success rate (%)')
-set(gca,'fontsize',16)
-pbaspect([1.5,1,1])
+set(gca,'fontsize',27)
+pbaspect([1,1,1])
 legend("Feedback scheme","Uniform",...
-    'location','southeast','fontsize',14)
+    'location','southeast','fontsize',25)
 legend("boxoff")
 saveas(gca, "nsamp_scan_plot.svg")

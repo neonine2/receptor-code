@@ -48,11 +48,11 @@ loglog(samplist, mean(schemelist,2),'linewidth',2,'Color',[0.8500 0.3250 0.0980]
 hold on
 loglog(samplist, mean(uniflist,2),'linewidth',2,'Color',[0 0.4470 0.7410]*1.12)
 hold off
-xlabel('Sampling rate (# samples per second)')
+xlabel('Sampling rate (per second)')
 ylabel('Error rate (%)')
-set(gca,'fontsize',16)
+set(gca,'fontsize',27)
 legend("Feedback scheme","Uniform",...
-    'location','southeast','fontsize',16)
-pbaspect([1.5,1,1])
+    'location','southeast','fontsize',25)
+pbaspect([1,1,1])
 legend("boxoff")
 saveas(gca, "nsamp_scan_retention_plot.svg")

@@ -68,7 +68,7 @@ for ii = 1:length(fnamelist)
     telapsed_memory = [telapsed_memory;[unif_traj(:),scheme_traj(:)]+1];
 end
 
-tiledlayout(4,1,'tilespacing','compact')
+tiledlayout(1,4,'tilespacing','compact')
 % plots
 palette = ["#297ec2","#f15e22"];
 nexttile
@@ -85,7 +85,7 @@ box off
 set(gca,'fontsize',12)
 ylabel('Proportion of time steps')
 xlabel('Distance from source')
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 
 nexttile
 for ii = 1:2
@@ -100,7 +100,7 @@ box off
 set(gca,'fontsize',12)
 ylabel('Proportion of time steps')
 xlabel('Distance from source')
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 
 nexttile
 for ii = 1:2
@@ -115,12 +115,12 @@ box off
 set(gca,'fontsize',12)
 ylabel('Proportion of time steps')
 xlabel('Distance from source')
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 
 load("decodemethod_retention_scan")
 nexttile
-X = categorical({'Random','Maximal increase','Optimal with memory'});
-X = reordercats(X,{'Random','Maximal increase','Optimal with memory'});
+X = categorical({'Random','Maximal increase','Temporal averaging'});
+X = reordercats(X,{'Random','Maximal increase','Temporal averaging'});
 b = bar(X,[mean(uniflist');mean(schemelist')]');
 b(1).FaceColor = 'flat';
 b(2).FaceColor = 'flat';
@@ -128,8 +128,8 @@ b(1).CData = repmat([41, 126, 194]/255,3,1);
 b(2).CData = repmat([241, 94, 34]/255,3,1);
 ylim([0,100])
 ylabel('Error rate (%)')
-set(gca,'fontsize',15)
+set(gca,'fontsize',12)
 box off
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 saveas(gca,"decodermethod_retention.svg")
 

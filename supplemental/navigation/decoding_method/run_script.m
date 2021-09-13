@@ -39,7 +39,6 @@ end
 save("decodemethod_scan")
 
 %% plotting
-
 fnamelist = ["tissue_300by900_localization_feedback_randomwalk",...
               "tissue_taxis_1_localization_feedback_randomwalk",...
                 "tissue_taxis_2_localization_feedback_randomwalk"];
@@ -65,7 +64,7 @@ for ii = 1:length(fnamelist)
     telapsed_memory = [telapsed_memory;[unif_time,scheme_time]];
 end
 
-tiledlayout(4,1,'tilespacing','compact')
+tiledlayout(1,4,'tilespacing','compact')
 % plots
 palette = ["#297ec2","#f15e22"];
 nexttile
@@ -81,7 +80,7 @@ box off
 set(gca,'fontsize',12)
 ylabel('Proportion of cells')
 xlabel('Time taken to source (min)')
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 
 nexttile
 for ii = 1:2
@@ -96,7 +95,7 @@ box off
 set(gca,'fontsize',12)
 ylabel('Proportion of cells')
 xlabel('Time taken to source (min)')
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 
 nexttile
 for ii = 1:2
@@ -111,7 +110,7 @@ box off
 set(gca,'fontsize',12)
 ylabel('Proportion of cells')
 xlabel('Time taken to source (min)')
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 
 load("decodemethod_scan")
 nexttile
@@ -123,9 +122,9 @@ b(2).FaceColor = 'flat';
 b(1).CData = repmat([41, 126, 194]/255,3,1);
 b(2).CData = repmat([241, 94, 34]/255,3,1);
 ylim([0,100])
-set(gca,'fontsize',15)
+set(gca,'fontsize',12)
 ylabel('Success rate (%)')
 box off
-pbaspect([2,1,1])
+pbaspect([1,1,1])
 saveas(gca,"decodermethod_localization.svg")
 
