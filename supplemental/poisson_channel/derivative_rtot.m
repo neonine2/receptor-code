@@ -35,7 +35,7 @@ xline(0.02,'--','LineWidth',1,'color','#0072BD','Alpha',1);
 xline(0.98,'--','LineWidth',1,'color','#D95319','Alpha',1);
 set(gca,'fontsize',12)
 title("$N = 10$","interpreter","latex",'fontsize',18)
-ylabel('$\frac{d}{dr_i}(I(X;Y))$','interpreter','latex','fontsize',20)
+ylabel('$\frac{d}{dr_i}I(X;Y)$','interpreter','latex','fontsize',20)
 xlabel('$r_i/N$','interpreter','latex','fontsize',20)
 pbaspect([1,1,1])
 legend("channel 1","channel 2","Location","southwest",...

@@ -36,10 +36,11 @@ for ii = 1:nmean
     exvec(ii) = ex/params.rtot;
 end
 
-close all
+tiledlayout(1,2)
 left_color = [0 0 0];
 right_color = [0 0.4470 0.7410];
 set(figure,'defaultAxesColorOrder',[left_color; right_color]);
+nexttile
 yyaxis left
 plot(exvec,optR,'k','linewidth',1);
 yline(0.5,'--r','linewidth',1)
@@ -49,14 +50,22 @@ yyaxis right
 plot(exvec,approxMIslope,'linewidth',1)
 [~,ind] = max(approxMIslope);
 xline(exvec(ind),'--', 'linewidth',1)
-ylabel('$\widetilde{\frac{d}{dr}}(I(X;Y))$','interpreter','latex','fontsize',23,...
+ylabel('$\partial I_0/\partial r_1$','interpreter','latex','fontsize',23,...
     'Rotation',-90,'VerticalAlignment','bottom')
 xlabel('$E[X_1]$','interpreter','latex','fontsize',23)
 % xlim([10^-0.5,10^1.5])
 patch([exvec(ind) exvec(ind) max(xlim) max(xlim)],...
     [0 0.2 0.2 0],...
     [0.9290 0.6940 0.1250],'FaceAlpha',.3,'EdgeColor','none')
-text(0.23,0.012,"$1.05 \times E[X_1] = E[X_2]$",'interpreter','latex',...
+text(0.2,0.012,"$1.05 \times E[X_1] = E[X_2]$",'interpreter','latex',...
     'fontsize',18)
 pbaspect([1,1,1])
+
+nexttile
+pvec = linspace(0,1,100);
+plot(pvec,-pvec.*log(pvec)-(1-pvec).*log(1-pvec),'linewidth',1)
+xlabel('Success probability p','fontsize',23)
+ylabel("H(p)",'fontsize',23,'interpreter','latex')
+pbaspect([0.5,1,1])
+set(gca,'fontsize',16)
 % saveas(gca,"derivative_env.svg")

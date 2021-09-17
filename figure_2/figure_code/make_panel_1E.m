@@ -22,14 +22,14 @@ for ii = 1:nenv
 end
 
 % making scatterplot
-order = [1,3,2];
+order = [3,2,1];
 for jj = 1:nenv
 ii = order(jj);
-jitterAmount = 3;
+jitterAmount = 4;
 jitterValuesX = rand(size(avgmat(:,ii)))*jitterAmount;   % +/-jitterAmount max
-scatter3(avgmat(:,ii).*jitterValuesX,...
+scatter3(avgmat(:,ii) .* jitterValuesX,...
          sparsemat(:,ii),...
-         deltamat(:,ii),45,hex2rgb(hexcolor{ii}),...
+         deltamat(:,ii),36,hex2rgb(hexcolor{ii}),...
          'filled','MarkerFaceAlpha',0.6)
 % scatter(sparsemat(1:2:end,ii),...
 %          deltamat(1:2:end,ii),30,hex2rgb(hexcolor{ii}),...
@@ -39,12 +39,12 @@ end
 hold off
 
 zlim([0,350])
-xlim([0.1,4])
+xlim([0.05,5])
 ylim([0,0.5])
 set(gca,'LineWidth',1,'FontSize',14,'Xscale','log');
 box off
 set(gcf,'color','w','PaperPositionMode', 'auto');
 grid off
-% saveas(gca, "panel_1E.svg")
+saveas(gca, "panel_1E.svg")
 
 end

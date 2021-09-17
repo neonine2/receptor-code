@@ -44,8 +44,7 @@ title(lgd,'$E[C_1]$', 'interpreter', 'latex','fontsize',17)
 legend('boxoff')
 ylabel('$r^*_1/N$','interpreter','latex','fontsize',23)
 xlabel('$(E[C_2]-E[C_1])/E[C_1]$','interpreter','latex','fontsize',23)
-yline(0.5,'--r','uniform receptor','LabelVerticalAlignment','middle',...
-    'linewidth',0.8,'fontsize',14)
+yline(0.5,'--r','linewidth',0.8)
 xlim([0,0.1])
 pbaspect([1,1,1])
 box on

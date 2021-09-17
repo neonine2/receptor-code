@@ -40,7 +40,7 @@ if isequal(envmodel,'tissue') || isequal(envmodel,'grad')
     [xmin,xmax,ymin,ymax] = deal(20,250,20,800); %um
     posmat = combvec(1:xmax,1:ymax)';
     env = reshape(fconc(posmat(:,1),posmat(:,2)),xmax,ymax)';
-    f = fit((1:xmax)',mean(env)','exp1'); % concentration function
+    [f,gof] = fit((1:xmax)',mean(env)','exp1'); % concentration function
     %tissue environment
     if plot_env && isequal(envmodel,'tissue')   
         imagesc(env) % shows a piece of the entire environment
@@ -49,6 +49,7 @@ if isequal(envmodel,'tissue') || isequal(envmodel,'grad')
         figure(2)
         plot(1:xmax,mean(env))
     elseif plot_env && isequal(envmodel,'grad')
+        disp(gof);
         plot(1:xmax,f(1:xmax),1:xmax,mean(env));
         title(['mean conc = ',num2str(mean(env,'all'))])
     end
