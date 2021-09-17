@@ -11,6 +11,7 @@ load(fnamelist(3),'envmean','optr')
 nexttile
 yyaxis left
 plot(optr(1+10,:,cellmodel)*100,'Linewidth',2,'color',hexcolor{3})
+-sum(optr(1+10,:,cellmodel).*log(optr(1+10,:,cellmodel)),'omitnan')
 ylim([0,11])
 yyaxis right
 plot(envmean(1+10,:,cellmodel),'Linewidth',2,'color',[1,1,1]/2)
@@ -25,6 +26,7 @@ nexttile
 yyaxis left
 plot(optr(67,:,cellmodel)*100,'Linewidth',2,'color',hexcolor{1})
 ylim([0,11])
+-sum(optr(67,:,cellmodel).*log(optr(67,:,cellmodel)),'omitnan')
 set(gca,'YColor','none')
 yyaxis right
 plot(envmean(67,:,cellmodel),'Linewidth',2,'color',[1,1,1]/2)
@@ -39,6 +41,7 @@ nexttile
 yyaxis left
 plot(optr(81,:,cellmodel)*100,'Linewidth',2,'color',hexcolor{2})
 ylim([0,11])
+-sum(optr(81,:,cellmodel).*log(optr(81,:,cellmodel)),'omitnan')
 set(gca,'YColor','none')
 yyaxis right
 plot(envmean(81,:,cellmodel),'Linewidth',2,'color',[1,1,1]/2)

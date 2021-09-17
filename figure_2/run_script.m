@@ -103,3 +103,20 @@ make_panel_1D(fnamelist)
                             
 %plotting panel 1E
 clear
+cellrad = [5,10,20];
+gridsz = [30,90];
+MI_opt("tissue","tissue_300by900",cellrad,"optgrid",gridsz,...
+    "savefname","tissue_300by900_szopt_large");
+MI_opt("grad","tissue_300by900",cellrad,"optgrid",gridsz,...
+    "savefname","tissue_300by900_grad_szopt_large");
+MI_opt("soil","soil_var_2",cellrad,"optgrid",gridsz,...
+    "savefname","soil_var_2_szopt_large");
+fnamelist = ["soil_var_2_szopt_large",...
+                "tissue_300by900_szopt_large",...
+                "tissue_300by900_grad_szopt_large"];
+make_panel_1E(fnamelist)
+
+
+
+
+

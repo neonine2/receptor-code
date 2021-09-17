@@ -11,6 +11,7 @@ addParameter(p,'saving_data',true, @islogical);
 addParameter(p,'plot_env',true,@islogical);
 addParameter(p,'optgrid',[10,30],@isvector);
 addParameter(p,'index','');
+addParameter(p,'savefname',"");
 
 parse(p,envmodel,fname,radlist,varargin{:});
 envmodel = p.Results.envmodel;
@@ -21,6 +22,7 @@ saving_data = p.Results.saving_data;
 plot_env = p.Results.plot_env;
 optgrid = p.Results.optgrid;
 index = p.Results.index;
+filename = p.Results.savefname;
 
 %% Setting parameter values
 m = 100; % number of membrane bins
@@ -180,20 +182,22 @@ disp('Finished')
 rel_eff = (sum(optMI) - sum(unifMI))./sum(unifMI) .* 100;
 %% saving data
 if saving_data
-    if nrad > 1
-        sz = 'sz';
-    else
-        sz = '';
-    end
-    if isequal(envmodel,'grad')
-        filename = strcat(fname,'_grad_',sz,'opt',num2str(index));
-    else
-        filename = strcat(fname,'_',sz,'opt',num2str(index));
+    if strlength(filename) == 0
+        if nrad > 1
+            sz = 'sz';
+        else
+            sz = '';
+        end
+        if isequal(envmodel,'grad')
+            filename = strcat(fname,'_grad_',sz,'opt',num2str(index));
+        else
+            filename = strcat(fname,'_',sz,'opt',num2str(index));
+        end
     end
     save(filename,'envmean','optMI','unifMI','optr','problem',...
         'conversion_factor',...
-            'receptor_params','cellsurf','centerlist',...
-            'radlist','fconc','fenv','rel_eff','-v7.3');
+        'receptor_params','cellsurf','centerlist',...
+        'radlist','fconc','fenv','rel_eff','-v7.3');
     disp('Done saving!')
 end
 
