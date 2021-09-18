@@ -1,4 +1,4 @@
-function [] = make_panel_6B(fnamelist)
+function [] = make_panel_7B(fnamelist)
 load(fnamelist(2),'rel_eff_mat','rtotlist','kdlist')
 rel_eff = rel_eff_mat;
 paramlist = combvec(rtotlist,kdlist)';
@@ -39,5 +39,5 @@ scatter([1000,1000,10000,17000,50000],...
             [0.013,0.019,0.05,12.5,2],70,'white',...
                             'filled','MarkerEdgeColor','k')
 hold off
-saveas(gca,"panel_6B.svg")
+saveas(gca,"panel_7B.svg")
 end

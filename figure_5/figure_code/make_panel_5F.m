@@ -1,4 +1,4 @@
-function [] = make_panel_4G(fname)
+function [] = make_panel_5F(fname)
 
 load('colorpalette')
 %% loading hlist data
@@ -38,5 +38,5 @@ ylim([0,0.8])
 pbaspect([2,1,1])
 set(gca,'fontsize',16,'linewidth',1.5)
 
-saveas(gca,"panel_4G.svg")
+saveas(gca,"panel_5F.svg")
 end

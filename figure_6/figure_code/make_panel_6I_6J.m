@@ -1,4 +1,4 @@
-function [] = make_panel_5I_5J(fnamelist,fnamelist_grad)
+function [] = make_panel_6I_6J(fnamelist,fnamelist_grad)
 
 %% PANEL I-J
 telapsed = [];
@@ -64,6 +64,6 @@ ylim([0,17])
 set(gca,'fontsize',25,'xticklabel',[])
 box off
 pbaspect([0.5,2,1])
-saveas(gcf,"panel_5I_5J.svg")
+saveas(gcf,"panel_6I_6J.svg")
 
 end

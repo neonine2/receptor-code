@@ -1,4 +1,4 @@
-function [] = make_panel_5D_5E(fnamelist,fnamelist_grad)
+function [] = make_panel_6D_6E(fnamelist,fnamelist_grad)
 %% PANEL D-E 
 %data panel D (tissue)
 telapsed = [];
@@ -63,6 +63,6 @@ ylim([0,100])
 set(gca,'fontsize',25,'xticklabel',[])
 box off
 pbaspect([0.5,2,1])
-saveas(gcf,"panel_5D_5E.svg")
+saveas(gcf,"panel_6D_6E.svg")
 
 end

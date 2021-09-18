@@ -1,4 +1,4 @@
-function [] = make_panel_4B(fname)
+function [] = make_panel_5B(fname)
 %% Panel B
 cellmodel = 2;
 bdd = 22;
@@ -92,5 +92,5 @@ set(gca,'xticklabels',[],'yticklabels',[],'xtick',[],'ytick',[],...
     'linewidth',2);
 colorbar('Ticks',[1,2,3],'TickLabels',["1","2","3"],'fontsize',12)
 
-saveas(gca,"panel_4B.svg")
+saveas(gca,"panel_5B.svg")
 end

@@ -1,4 +1,4 @@
-function [] = make_panel_5C(fname)
+function [] = make_panel_6C(fname)
 %% Plotting trajectories
 %loading files
 load(fname)
@@ -46,5 +46,5 @@ for jj = 1:6
 end
 brighten(0);
 
-saveas(gca,"panel_5C.svg")
+saveas(gca,"panel_6C.svg")
 end

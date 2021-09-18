@@ -45,4 +45,4 @@ save("kd_rtot_rel_eff_2");
 
 %% plotting
 fnamelist = ["kd_rtot_rel_eff","kd_rtot_rel_eff_2"];
-make_panel_6B(fnamelist)
+make_panel_7B(fnamelist)

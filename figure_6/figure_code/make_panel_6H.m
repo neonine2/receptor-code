@@ -1,4 +1,4 @@
-function [] = make_panel_5H(fname)
+function [] = make_panel_6H(fname)
 %% Plotting trajectories
 %loading files
 load(fname)
@@ -35,5 +35,5 @@ for jj = 1:6
     pbaspect([1,1,1])
     hold off
 end
-saveas(gca, "panel_5H.svg")
+saveas(gca, "panel_6H.svg")
 end
