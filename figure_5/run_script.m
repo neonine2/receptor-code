@@ -1,13 +1,12 @@
 clear
-
 fname = ["tissue_300by900_szopt.mat","soil_var_2_szopt.mat"];
 testing_param = ["koff","h"];
 mode = ["static","dynamic"];
 cellmodel = 2;
 
 for ii = 1:2
-    for jj = 2:2
-        for kk = 1:1
+    for jj = 1:2
+        for kk = 1:2
             feedback_scheme_efficiency(which(fname(ii)),testing_param(jj),mode(kk),cellmodel)
         end
     end
@@ -15,7 +14,7 @@ end
 
 %% plotting 5B, 5C, 5F
 
-make_panel_5B("tissue_300by900_szopt_scheme_koff_static_10um",...
+make_panel_5B(["tissue_300by900_szopt_scheme_koff_static_10um",...
     "soil_var_2_szopt_scheme_koff_static_10um"])
 
 make_panel_5C(["tissue_300by900_szopt_scheme_h_static_10um",...

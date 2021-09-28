@@ -37,9 +37,10 @@ s = param.mean_cell_radius;
 results.f = zeros(time_size,m);
 results.cellp = zeros(time_size,2);
 results.env = zeros(time_size,m);
+results.a = zeros(time_size,m);
 if hasMemory
     memlen = move_rate*10; % [seconds] memory length
-    results.an = zeros(memlen,m);
+    results.aMem = zeros(memlen,m);
 end
 
 % Initial environment
@@ -81,6 +82,8 @@ elseif isequal(receptor,'w1dist')
     problem.x0 = results.f(it,:)./sum(results.f(it,:));
 end
 
+results.a(it,:) = receptor_output(env,results.f(it,:),param);
+
 for it = 2:time_size  %it == "time iterators"
     % update receptors
     if isequal(receptor,'feedback')
@@ -100,7 +103,7 @@ for it = 2:time_size  %it == "time iterators"
     end
     if hasMemory
         an = receptor_output(env,results.f(it-1,:),param);
-        results.an = [an; results.an(1:min(it,memlen)-1,:)];
+        results.aMem = [an; results.aMem(1:min(it,memlen)-1,:)];
     end
     
     % move cell and update environment
@@ -109,7 +112,7 @@ for it = 2:time_size  %it == "time iterators"
             rvec = results.f(it,:);
             ansum = receptor_output(env,rvec,param);
             if hasMemory
-                ansum = mean([ansum; results.an(1:min(it,memlen)-1,:)]);
+                ansum = mean([ansum; results.aMem(1:min(it,memlen)-1,:)]);
             end
             movdir = grad_decode(ansum, decoder_method);
             
