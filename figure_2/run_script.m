@@ -13,7 +13,7 @@ envparams = struct('rad',10,'nCircles',[3,8],'centers',centers,'Diff',45,...
 save('tissue_300by900_param','envparams')
 
 %generate tissue env
-sim_tissue(envparams,'tissue_300by900');
+out=sim_tissue(envparams,'tissue_300by900');
 
 %generate soil env
 % **run file named env_LGCP.R to generate the data env file**;
