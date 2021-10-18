@@ -7,11 +7,14 @@ nfile = length(fnamelist);
 %% panel B-i)
 figure(1)
 tiledlayout(1,3,'TileSpacing','none')
+
+%simple gradient
 load(fnamelist(3),'envmean','optr')
 nexttile
 yyaxis left
-plot(optr(1+10,:,cellmodel)*100,'Linewidth',2,'color',hexcolor{3})
--sum(optr(1+10,:,cellmodel).*log(optr(1+10,:,cellmodel)),'omitnan')
+plot(optr(11,:,cellmodel)*100,'Linewidth',2,'color',hexcolor{3})
+% sum(maxk(optr(11,:,cellmodel),12))
+% -sum(optr(11,:,cellmodel).*log(optr(1+10,:,cellmodel)),'omitnan')
 ylim([0,11])
 yyaxis right
 plot(envmean(1+10,:,cellmodel),'Linewidth',2,'color',[1,1,1]/2)
@@ -21,12 +24,15 @@ set(gca,'YColor','none')
 box off
 set(gca,'Linewidth',1.5,'fontsize',13,'YTick',[0,0.5,1],...
     'XTickLabel',{'-\pi','0','\pi'});
+
+%soil
 load(fnamelist(1),'envmean','optr')
 nexttile
 yyaxis left
 plot(optr(67,:,cellmodel)*100,'Linewidth',2,'color',hexcolor{1})
 ylim([0,11])
--sum(optr(67,:,cellmodel).*log(optr(67,:,cellmodel)),'omitnan')
+% sum(maxk(optr(67,:,cellmodel),12))
+% -sum(optr(67,:,cellmodel).*log(optr(67,:,cellmodel)),'omitnan')
 set(gca,'YColor','none')
 yyaxis right
 plot(envmean(67,:,cellmodel),'Linewidth',2,'color',[1,1,1]/2)
@@ -36,12 +42,15 @@ box off
 set(gca,'YColor','none')
 set(gca,'Linewidth',1.5,'fontsize',13,'YTick',[0,0.5,1],...
     'XTickLabel',{'-\pi','0','\pi'});
+
+%tissue
 load(fnamelist(2),'envmean','optr')
 nexttile
 yyaxis left
 plot(optr(81,:,cellmodel)*100,'Linewidth',2,'color',hexcolor{2})
 ylim([0,11])
--sum(optr(81,:,cellmodel).*log(optr(81,:,cellmodel)),'omitnan')
+% sum(maxk(optr(81,:,cellmodel),12))
+% -sum(optr(81,:,cellmodel).*log(optr(81,:,cellmodel)),'omitnan')
 set(gca,'YColor','none')
 yyaxis right
 plot(envmean(81,:,cellmodel),'Linewidth',2,'color',[1,1,1]/2)
