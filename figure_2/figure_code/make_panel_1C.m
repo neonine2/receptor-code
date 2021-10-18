@@ -22,5 +22,6 @@ set(gca,'Linewidth',1.5,'xtick',[],'fontsize',16)
 box off
 pbaspect([3.2,1,1])
 ylabel('$\Delta I/I$','Interpreter','latex','fontsize',21)
+saveas(gca,"panel_1C.svg")
 
 end

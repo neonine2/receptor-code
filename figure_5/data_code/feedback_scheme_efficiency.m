@@ -1,14 +1,18 @@
-function [relative_eff] = feedback_scheme_efficiency(fname,testing_param,mode,cellmodel,varargin)
+function [relative_eff] = feedback_scheme_efficiency(fname,scheme_param,...
+                                    testing_param,mode,cellmodel,varargin)
 p = inputParser;
-addRequired(p,'fname',@isfile);
+addRequired(p,'fname',@isfile); % environment file
+addRequired(p,'scheme_param',@isstruct); % environment file
 addRequired(p,'testing_param',@isstring); % h or koff
 addRequired(p,'mode',@isstring); % static or dynamic
-addRequired(p,'cellmodel',@isnumeric); % static or dynamic
+addRequired(p,'cellmodel',@isnumeric); % sets the cell size
 
 % optional arguments
 addParameter(p,'saving_data',true,@islogical);
-parse(p,fname,testing_param,mode,cellmodel,varargin{:});
+
+parse(p,fname,scheme_param,testing_param,mode,cellmodel,varargin{:});
 fname = p.Results.fname;
+scheme_param = p.Results.scheme_param;
 testing_param = p.Results.testing_param;
 mode = p.Results.mode;
 cellmodel = p.Results.cellmodel;
@@ -26,8 +30,7 @@ unifMI = unifMI(:,cellmodel);
 optMI = optMI(:,cellmodel);
 optr = optr(:,:,cellmodel);
 
-% load scheme parameter
-load('scheme_parameter')
+% set scheme parameter
 scheme_param.mean_cell_radius = radlist(cellmodel);
 fcount = @(x,y) fconc(x,y)*conversion_factor(cellmodel);
 scheme_param.fcount = fcount;

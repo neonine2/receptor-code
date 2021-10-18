@@ -198,7 +198,9 @@ end
 if isequal(receptor,"w1dist")
     filename = strcat(filename,"_gamma",num2str(param.gamma));
 end
-
+if ~isequal(decoder_method,"optimal_noise")
+    filename = strcat(filename,"_",decoder_method);
+end
 if save_data == 2
     save(strcat(filename,index),'-v7.3')
 elseif save_data == 1

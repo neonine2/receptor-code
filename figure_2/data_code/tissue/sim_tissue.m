@@ -8,7 +8,7 @@ arguments
     fname string = 'tissue_env' %name of saved file
 end
 
-kecm = params.kecm; %nM^-1 s^-1 CXCL21
+kecm = params.kecm; %nM^-1 s^-1
 kecmoff = 0; %s^-1
 
 % units: micron-microgram-second
@@ -73,15 +73,20 @@ for ii=1:Ngx+1
 end
 [ixcell,iycell]=find(iscell>0);  % indices of points inside the cells
 
-% coarse grain network into matrix with hg x hg grid # ECM binding sites
+% coarse grain network into matrix with Ngx x Ngy grid # ECM binding sites
 ecmMAT = params.ecmMAT;
 xecmpos = params.xecmpos;
 ecmsiteC = params.ecmsiteC; % average ecm binding site concentration [nM]
-                            % 5nM ≈ one binding site per 0.5um
+                            % 5nM ≈ one binding site per 0.5um fiber
 nrow = size(ecmMAT,1);
 ncol = size(ecmMAT,2);
+if mod(nrow,2) == 1 || mod(ncol,2) == 1
+    error("need ecmMAT to have even valued dimension")
+end
+% coarse grain by factor of ng, so distance between grid point is ng um
 ecmMAT = squeeze(sum(sum(reshape(ecmMAT,hg,nrow/hg,hg,ncol/hg),1),3)); 
-fiber = ecmMAT(1+xecmpos:Ngx+1+xecmpos,1:Ngy+1); % taking a subset of appropriate dimension
+fiber = ecmMAT(1+xecmpos:Ngx+1+xecmpos,1:Ngy+1); % taking a subset of 
+                                                 % appropriate dimension
 
 % conversion from ecm count to concentration 
 normalize_factor = mean(fiber,'all')/ecmsiteC; 
@@ -174,7 +179,6 @@ pause(0.1)
   uz=VeloFromForce(xz,Nz,xtot,ftot,Npts+Nz+2*Nx,mu,hb);
  
 
-  
   % draw the fluid velocity field
   quiver(xyg(:,:,1),xyg(:,:,2),uxg(:,:),uyg(:,:),1.5,'b') 
  
@@ -306,7 +310,6 @@ pause(0.1)
       'cell','hb','Niter','releaseT','params');
   
 end    % end program
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

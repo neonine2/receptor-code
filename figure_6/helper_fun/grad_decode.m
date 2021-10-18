@@ -15,7 +15,7 @@ phi(1) = 0; % correct for minor numerical inaccuracy
 if isequal(decoder_method, "optimal_noise")
     z1 = sum(cos(phi).* activity');
     z2 = sum(sin(phi).* activity');
-    angle = atan2(z2,z1) + randn(1)*0.5;
+    angle = atan2(z2,z1) + randn(1)*0.1;
 elseif isequal(decoder_method, "perfect")
     [~,I] = max(activity - circshift(activity, m/2));
     angle = phi(I);
