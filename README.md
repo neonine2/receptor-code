@@ -10,4 +10,4 @@ with figure 5 in the manuscript, and use those data to generate all panels in fi
 Exception: in the `run_script.m` file for figure 2, there are two sections that requires R scripts to be run 
 (`env_LGCP.R`, `soil_gen_var.R`), check `run_script.m` to see how to manually run the R script.
 
-All data and code have also been uploaded onto the Caltech data repository. 
+All data and code are openly available at: http://dx.doi.org/10.22002/D1.2149. 
