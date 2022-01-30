@@ -35,7 +35,7 @@ sim_tissue(envparams,'tissue_300by900');
 % IMPORTANT: run file named env_LGCP.R to generate the data env file, this
 % will again be stochastic, expect variability
 
-%% panel 1A - 1C
+%% panel 2A
 cellrad = [5,10,20];
 MI_opt("tissue","tissue_300by900",cellrad); %tissue_300by900_szopt
 MI_opt("grad","tissue_300by900",cellrad); %tissue_300by900_grad_szopt
@@ -45,16 +45,21 @@ MI_opt("soil","soil_var_2",cellrad,"optgrid",[20,60]); %soil_var_2_szopt
 fnamelist = ["soil_var_2_szopt","tissue_300by900_szopt",...
                 "tissue_300by900_grad_szopt"];
 
-%plotting panel 1A
-make_panel_1A(fnamelist)
+%plotting panel 2A
+make_panel_2A(fnamelist)
 
-%plotting panel 1B
-make_panel_1B(fnamelist)
+%plotting panel 2B
+make_panel_2B(fnamelist)
 
-%plotting panel 1C
-make_panel_1C(fnamelist)
+
+%% panel 2C
+
+%% running optimization
+alpha_run("diff");
+%plotting panel 2C
+make_panel_2C("opt_result_diff.mat"); 
                    
-%% panel 1D
+%% panel 2D
 %generate tissue with different kecm parameter
 clear;
 load('tissue_300by900_param','envparams');
@@ -68,7 +73,7 @@ parfor ii = 1:nkecm
     sim_tissue(par,strcat('tissue_kecm_',num2str(ii)))
 end
 % output tissue env
-filelist = ["tissue_kecm_1","tissue_kecm_2","tissue_kecm_3",...
+tissue_filelist = ["tissue_kecm_1","tissue_kecm_2","tissue_kecm_3",...
             "tissue_kecm_4","tissue_kecm_5","tissue_kecm_6",...
             "tissue_kecm_7","tissue_kecm_8","tissue_kecm_9"
             ]; 
@@ -78,41 +83,40 @@ cellrad = 10;
 rel_eff_tissue = zeros(nkecm,1);
 for ii = 1:nkecm
     %output file saved to current working directory
-    rel_eff_tissue(ii) = MI_opt("tissue",filelist(ii),cellrad);
+    rel_eff_tissue(ii) = MI_opt("tissue",tissue_filelist(ii),cellrad);
 end
 save('rel_eff_tissue_kcm','rel_eff_tissue','filelist')
 
 % optimize in fitted gradient
 rel_eff_grad = zeros(nkecm,1);
 for ii = 1:nkecm
-    rel_eff_grad(ii) = MI_opt("grad",filelist(ii),cellrad);
+    rel_eff_grad(ii) = MI_opt("grad",tissue_filelist(ii),cellrad);
 end
 save('rel_eff_grad_kcm','rel_eff_grad','filelist')
 
 %generate soil with different ligand spatial spread
 % **run file named soil_ge_var.R to generate the data env files**;
-filelist = ["soil_var_0.001","soil_var_0.003",...
+soil_filelist = ["soil_var_0.001","soil_var_0.003",...
             "soil_var_0.01","soil_var_0.032",...
             "soil_var_0.1","soil_var_0.316",...
             "soil_var_1","soil_var_3.162",...
             "soil_var_10","soil_var_31.623","soil_var_80"]; 
             %var from logspace(-3,1.5,10) and 80;
-nvar = length(filelist);
+nvar = length(soil_filelist);
 % running optimization over all soil env
 cellrad = 10;
 rel_eff_soil = zeros(nvar,1);
 for ii = 1:nvar
     %output file saved to current working directory
     rel_eff_soil(ii) = ...
-        MI_opt("soil",strcat(filelist(ii),".mat"),cellrad,"optgrid",[20,60]); 
+        MI_opt("soil",strcat(soil_filelist(ii),".mat"),cellrad,"optgrid",[20,60]); 
 end
 save('soil_var_rel_eff','rel_eff_soil','filelist')
 
-%plotting panel 1D
-fnamelist = ["rel_eff_tissue_kcm","rel_eff_grad_kcm","soil_var_rel_eff"];
-make_panel_1D(fnamelist)
+%plotting panel 2D
+make_panel_2D(tissue_filelist,soil_filelist,"diff")
 
-%% panel 1E
+%% panel 2E
 clear
 % optimize over finer grid to obtain more sample points
 cellrad = [5,10,20];
@@ -126,6 +130,6 @@ MI_opt("soil","soil_var_2",cellrad,"optgrid",gridsz,...
 fnamelist = ["soil_var_2_szopt_large",...
                 "tissue_300by900_szopt_large",...
                 "tissue_300by900_grad_szopt_large"];
-% plotting panel 1E
-make_panel_1E(fnamelist)
+% plotting panel 2E
+make_panel_2E(fnamelist,"diff")
 

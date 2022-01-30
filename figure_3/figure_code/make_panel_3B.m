@@ -44,7 +44,7 @@ yticks([-45,-30,-15,0,15,30,45])
 set(gca,'fontsize',20)
 colorbar('location','eastoutside','ticks',0:0.2:1, 'LineWidth',0.5)
 pbaspect([1 1 1])
-
+caxis([-0.1280    1.0000])
 if save_plot
     [filepath,name,ext] = fileparts(perturbfname);
     saveas(gcf,strcat(name,"_heatmap"),'svg')

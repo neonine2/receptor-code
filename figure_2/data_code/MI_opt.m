@@ -12,6 +12,9 @@ addParameter(p,'plot_env',true,@islogical);
 addParameter(p,'optgrid',[10,30],@isvector);
 addParameter(p,'index','');
 addParameter(p,'savefname',"");
+addParameter(p,'mode',"ratio",@isstring);
+addParameter(p,'cfac',1,@isnumeric);
+addParameter(p,'nbin',100,@isnumeric);
 
 parse(p,envmodel,fname,radlist,varargin{:});
 envmodel = p.Results.envmodel;
@@ -23,15 +26,15 @@ plot_env = p.Results.plot_env;
 optgrid = p.Results.optgrid;
 index = p.Results.index;
 filename = p.Results.savefname;
-
-%% Setting parameter values
-m = 100; % number of membrane bins
+mode = p.Results.mode;
+cfac = p.Results.cfac;
+m = p.Results.nbin;  % number of membrane bins
 
 %% setting up environment
 disp(strcat('Setting up environment...',fname))
 if isequal(envmodel,'tissue') || isequal(envmodel,'grad')
     load(fname,'cbound','csol','xmin','xmax','ymin','ymax');
-    ctot = cbound(5:end,:) + csol(5:end,:); % move away from source (left) boundary
+    ctot = (cbound(5:end,:) + csol(5:end,:))*cfac; % move away from source (left) boundary
     posmat = combvec(linspace(1,xmax-xmin,size(ctot,1)),...
                         linspace(1,ymax-ymin,size(ctot,2)))';
     fenv = scatteredInterpolant(posmat,ctot(:),'natural','linear');
@@ -176,11 +179,10 @@ for jj = 1:nrad
             disp(ii);
         end
     end
-    % display result
-    disp((sum(optMI) - sum(unifMI))./sum(unifMI) .* 100);
 end 
 disp('Finished')
-rel_eff = (sum(optMI) - sum(unifMI))./sum(unifMI) .* 100;
+rel_eff = compute_efficacy(mean(optMI),mean(unifMI),"mode",mode);
+disp(rel_eff);
 %% saving data
 if saving_data
     if strlength(filename) == 0
@@ -198,7 +200,7 @@ if saving_data
     save(filename,'envmean','optMI','unifMI','optr','problem',...
         'conversion_factor',...
         'receptor_params','cellsurf','centerlist',...
-        'radlist','fconc','fenv','rel_eff','-v7.3');
+        'radlist','fconc','fenv','rel_eff','cfac','-v7.3');
     disp('Done saving!')
 end
 

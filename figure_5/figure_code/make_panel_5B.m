@@ -1,4 +1,4 @@
-function [] = make_panel_5B(fname)
+function [envtissue,envsoil] = make_panel_5B(fname)
 %% Panel B
 cellmodel = 2;
 bdd = 22;

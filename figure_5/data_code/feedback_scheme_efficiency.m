@@ -3,12 +3,13 @@ function [relative_eff] = feedback_scheme_efficiency(fname,scheme_param,...
 p = inputParser;
 addRequired(p,'fname',@isfile); % environment file
 addRequired(p,'scheme_param',@isstruct); % environment file
-addRequired(p,'testing_param',@isstring); % h or koff
+addRequired(p,'testing_param',@isstring); % h or koff or both (dual)
 addRequired(p,'mode',@isstring); % static or dynamic
 addRequired(p,'cellmodel',@isnumeric); % sets the cell size
 
 % optional arguments
 addParameter(p,'saving_data',true,@islogical);
+addParameter(p,'selectind',-1,@isvector);
 
 parse(p,fname,scheme_param,testing_param,mode,cellmodel,varargin{:});
 fname = p.Results.fname;
@@ -17,6 +18,7 @@ testing_param = p.Results.testing_param;
 mode = p.Results.mode;
 cellmodel = p.Results.cellmodel;
 saving_data = p.Results.saving_data;
+selectind = p.Results.selectind;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 decoder_method = "yaxis1d"; % if static, this option is not needed
@@ -56,6 +58,9 @@ scheme_param.dx = ellipsePerimeter(s,s)/m;
 nloc = size(centerlist,1);
 if isequal(mode,'static')
     posind = [1:10:nloc,(1:10:nloc)+1];
+    if selectind > 0
+        posind = posind(selectind);
+    end
 elseif isequal(mode,'dynamic')
     % make sure cell is far enough from boundary
     posind = 1:10:nloc;
@@ -63,28 +68,41 @@ elseif isequal(mode,'dynamic')
         posind = 1:40:nloc;
     end
     posind = [posind(4:end),posind(4:end)+1];
+    if selectind > 0
+        posind = posind(selectind);
+    end
 end
 nparam = 30;
 if isequal(testing_param,"h")
-    hlist = logspace(-3,-2,nparam);
-    
+    paramlist = logspace(-3,-2,nparam);
 elseif isequal(testing_param,"koff")
-    kofflist = logspace(-2,-0.4,nparam);
+    paramlist = logspace(-2,-0.4,nparam);
+elseif isequal(testing_param,"dual")
+    hlist = logspace(-3,-1,16);
+    kofflist = logspace(-2,0,16);
+    paramlist = combvec(hlist,kofflist)';
+    nparam = size(paramlist,1);
 end
 npos = length(posind);
 schemer = zeros(npos,scheme_param.N,nparam);
 schemeMI = zeros(npos,nparam);
 schemec = zeros(npos,scheme_param.N);
+schemecellp = zeros(npos,2);
 recstat = zeros(npos,4,nparam);
 
 %% running feedback scheme for different parameter and computing MI 
 
 for ii = 1:nparam
+    % set rate parameters
     if isequal(testing_param,"h")
-        scheme_param.h = hlist(ii);
+        scheme_param.h = paramlist(ii);
     elseif isequal(testing_param,"koff")
-        scheme_param.koff = kofflist(ii);
+        scheme_param.koff = paramlist(ii);
+    elseif isequal(testing_param,"dual")
+        scheme_param.h = paramlist(ii,1);
+        scheme_param.koff = paramlist(ii,2);
     end
+    
     parfor jj = 1:npos
         sparam = scheme_param;
         % set parameter
@@ -99,6 +117,7 @@ for ii = 1:nparam
         rvec = results.f(end,:)/sum(results.f(end,:)); 
         cmean = results.env(end,:); 
         schemec(jj,:) = cmean;
+        schemecellp(jj,:) = results.cellp(end,:);
         schemer(jj,:,ii) = rvec;
         recstat(jj,:,ii) = results.stat;
         % computing MI of scheme-induced receptor placement
@@ -143,11 +162,13 @@ cellrad = radlist(cellmodel);
 if saving_data
     [~,name,~] = fileparts(fname);
     schemename = strcat("_scheme_",testing_param,"_",mode,"_",num2str(cellrad),"um");
-    scanparam = strcat(testing_param,"list");
+    if selectind > 0
+        schemename = strcat(schemename,"_selectind");
+    end
     save(strcat(name,schemename),'scheme_param','posind','schemer',...
-        'recstat',scanparam,'cellmodel','schemeMI','cellrad',...
-        'scheme_eff','opt_eff','relative_eff','schemec',...
-        'relative_eff');
+        'recstat','cellmodel','schemeMI','cellrad',...
+        'scheme_eff','opt_eff','relative_eff','schemec','paramlist',...
+        'relative_eff','schemecellp');
 end
 
 end
