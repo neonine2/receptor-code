@@ -1,4 +1,4 @@
-function [] = make_panel_B(optfname, perturbfname, varargin)
+function [] = make_panel_3B(optfname, perturbfname, varargin)
 
 p = inputParser;
 addRequired(p,'optfname',@isfile);
@@ -6,10 +6,12 @@ addRequired(p,'perturbfname',@isfile);
 
 % optional arguments
 addParameter(p,'save_plot',true,@islogical);
+addParameter(p,'mode',"ratio",@isstring);
 parse(p,optfname,perturbfname,varargin{:});
 optfname = p.Results.optfname;
 perturbfname = p.Results.perturbfname;
 save_plot = p.Results.save_plot;
+mode = p.Results.mode;
 
 %% loading data
 load(perturbfname)
@@ -19,13 +21,13 @@ unifMI = unifMI(:,cellmodel);
 optr = optr(:,:,cellmodel);
 optMI = optMI(:,cellmodel);
 envmean = envmean(:,:,cellmodel);
-opt_eff = (sum(optMI) - sum(unifMI))./sum(unifMI) .* 100;
+opt_eff = compute_efficacy(mean(optMI), mean(unifMI),"mode",mode);
 
 %% panel B heatmap
 perturbd_eff = zeros(length(shiftparam)*length(flattenparam),1);
 for ii = 1:nparam
     pMI = perturbMI(:,ii);
-    perturbd_eff(ii) = (sum(pMI) - sum(unifMI))./sum(unifMI) .* 100;
+    perturbd_eff(ii) = compute_efficacy(mean(pMI), mean(unifMI),"mode",mode);
 end
 F = scatteredInterpolant(perturbparam,perturbd_eff,'natural','linear');
 shiftp = linspace(-15,15,81);
@@ -44,7 +46,7 @@ yticks([-45,-30,-15,0,15,30,45])
 set(gca,'fontsize',20)
 colorbar('location','eastoutside','ticks',0:0.2:1, 'LineWidth',0.5)
 pbaspect([1 1 1])
-caxis([-0.1280    1.0000])
+% caxis([-0.1280    1.0000])
 if save_plot
     [filepath,name,ext] = fileparts(perturbfname);
     saveas(gcf,strcat(name,"_heatmap"),'svg')
