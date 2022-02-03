@@ -21,6 +21,6 @@ for ii = 1:2
     title(strcat("Cell radius = ",num2str(cellrad(ii)),"\mu m"),...
         "FontWeight",'normal')
 end
-saveas(gca,strcat("fig_S3_",mode,".svg"))
+saveas(gca,strcat("fig_S4_",mode,".svg"))
 end
 
