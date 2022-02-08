@@ -53,8 +53,6 @@ make_panel_2B(fnamelist)
 
 
 %% panel 2C
-
-%% running optimization
 alpha_run("diff");
 %plotting panel 2C
 make_panel_2C("opt_result_diff.mat"); 
