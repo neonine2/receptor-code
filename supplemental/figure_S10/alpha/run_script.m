@@ -52,4 +52,4 @@ for ii = 1:nparam
 end
 set(gca,'xticklabel',receptornames,'fontsize',8,'linewidth',0.5)
 xtickangle(45)
-saveas(gca,strcat("alpha_",mode),'svg')
+% saveas(gca,strcat("alpha_",mode),'svg')
