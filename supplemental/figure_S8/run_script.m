@@ -1,113 +1,46 @@
 clear all;
 close all;
 
-% testing efficiency of feedback scheme in both static and dynamic
-% environment and across different parameters
-fname = ["tissue_300by900_szopt.mat","soil_var_2_szopt.mat"]; %tissue, soil
-cellmodel = 2; %10um radius cell
+%% setting paramaters
+load('tissue_300by900_szopt','receptor_params')
+load('scheme_parameter')
 
-% load parameters for feedback scheme simulation
-load('scheme_parameter','scheme_param') 
-ind = [19,20];
+% setting feedback scheme parameter
+thour = 1;
+conversion_factor = conc2count(scheme_param.mean_cell_radius,scheme_param.N);
+scheme_param.T = 60*60*thour; % seconds
+scheme_param.kd = receptor_params.kd*conversion_factor;
+scheme_param.rtot = receptor_params.rtot;
+scheme_param.receptornoise = receptor_params.receptornoise;
 
-for ii = 1:length(fname)
-    feedback_scheme_efficiency(which(fname(ii)),scheme_param,...
-                          "dual","static",cellmodel,"selectind",ind(ii));
+% default parameter
+gammalist = [0,2e-2,1e-1];
+for jj = 1:length(gammalist)
+    scheme_param.gamma = gammalist(jj); % for w1dist
+    racing_cells("tissue_300by900", scheme_param,...
+        "envmodel","tissue","receptor","w1dist","task","localization",...
+        "verbose",true);
 end
 
-%plotting
-fname = ["tissue_300by900_szopt_scheme_dual_static_10um_selectind",...
-             "soil_var_2_szopt_scheme_dual_static_10um_selectind"];
-hlist = logspace(-3,-1,16);
-kofflist = logspace(-2,0,16);
-
-tiledlayout(2,1)
-for ii = 1:2
-    load(fname(ii),'schemer','schemec','paramlist','recstat');
-    nparam = size(schemer,3);
-    score = zeros(nparam,1);
-    for jj = 1:nparam
-        score(jj) = clusterScore(schemer(:,:,jj),schemec);
-    end
-    score = score(~isnan(score));
-    h = squeeze(recstat(:,1,~isnan(score)));
-    koff = paramlist(~isnan(score),2);
-    F = scatteredInterpolant(h,koff,score);
-    
-    newha = logspace(log10(min(recstat(:,1,:))+2e-5),...
-                   log10(max(recstat(:,1,:))-1e-5),length(hlist));
-    newkoff = logspace(log10(min(kofflist)),...
-                   log10(max(kofflist)),length(kofflist));
-    newcoord = combvec(newha,newkoff)';
-    score = F(newcoord(:,1),newcoord(:,2));
-    score = reshape(score,length(newha),length(newkoff));
-    nexttile
-    colormap(viridis)
-    imagesc(newkoff, newha, score)
-    set(gca,'XScale','log','YScale','log','fontsize',13);
-    caxis([0.006,4.87])
-    caxis
-    xlim([0.01,1])
-    colorbar()
-    pbaspect([1,1,1])
-    xlabel('$k_{\mathrm{off}}$','interpreter','latex')
-    ylabel('$\langle h A_i \rangle$','interpreter','latex')
+%%plotting
+clear
+filelist = dir("data/tissue*");
+for ii = 1:length(filelist)
+    load(filelist(ii).name,"schemerate","unifrate")
+    schemedata(ii) = schemerate;
+    unifdata(ii) = unifrate;
 end
+[schemedata(2:3)] = [schemedata(3),schemedata(2)];
+unifdata = mean(unifdata)*ones(1,3);
 
-%% plotting call out boxes 
-clear all;
-close all;
-
-fname = ["tissue_300by900_szopt_scheme_dual_static_10um_selectind",...
-             "soil_var_2_szopt_scheme_dual_static_10um_selectind"];
-[envtissue, envsoil] = make_panel_5B(["tissue_300by900_szopt_scheme_koff_static_10um",...
-                     "soil_var_2_szopt_scheme_koff_static_10um"]);
-                 
-% Tissue
-paramindex = [65,98,120,160-1];
-tiledlayout(2,2,'TileSpacing','compact')
-for ii = 1:4
-    load(fname(1),'schemer','scheme_param','recstat','paramlist');
-    nexttile
-    colormap(gray)
-    imagesc(envtissue)
-    pbaspect([1,1,1])
-    m = scheme_param.N;
-    r = schemer(1,:,paramindex(ii))';
-    angle = linspace(0,2*pi*(1-1/m),m);
-    s = scheme_param.mean_cell_radius*10;
-    cellsurf = 221 + (s+r*m*5).*[cos(angle)',sin(angle)'];
-    hold on
-    fill(cellsurf(:,1),cellsurf(:,2),[17 17 17]/18,'Linewidth',1)
-    rectangle('Position',[221-s,221-s,2*s,2*s],'Curvature',[1,1], ...
-        'FaceColor', [17 17 17]/32, 'EdgeColor', 'k','Linewidth',2);
-    title(recstat(1,1:2,paramindex(ii)))
-    set(gca,'xticklabels',[],'yticklabels',[],'xtick',[],'ytick',[],...
-        'linewidth',2);
-end
-
-% Soil
-paramindex = [65,98,120,160-1];
-tiledlayout(2,2,'TileSpacing','compact')
-for ii = 1:4
-    load(fname(2),'schemer','scheme_param','recstat','paramlist');
-    nexttile
-    colormap(gray)
-    imagesc(envsoil)
-    pbaspect([1,1,1])
-    m = scheme_param.N;
-    r = schemer(1,:,paramindex(ii))';
-    angle = linspace(0,2*pi*(1-1/m),m);
-    s = scheme_param.mean_cell_radius*10;
-    cellsurf = 221 + (s+r*m*5).*[cos(angle)',sin(angle)'];
-    hold on
-    fill(cellsurf(:,1),cellsurf(:,2),[17 17 17]/18,'Linewidth',1)
-    rectangle('Position',[221-s,221-s,2*s,2*s],'Curvature',[1,1], ...
-        'FaceColor', [17 17 17]/32, 'EdgeColor', 'k','Linewidth',2);
-    title(recstat(1,1:2,paramindex(ii)))
-    set(gca,'xticklabels',[],'yticklabels',[],'xtick',[],'ytick',[],...
-        'linewidth',2);
-%     colorbar('Ticks',[0.5,1,1.5],'TickLabels',["0.5","1","1.5"],...
-%         'fontsize',12)
-end
-
+b = bar([unifdata;schemedata]');
+b(1).CData = [41, 126, 194]/255;
+b(2).CData = [241, 94, 34]/255;
+set(gca,'fontsize',14,'xticklabel',["0","0.02","0.1"])
+xlabel("$\gamma$",'interpreter','latex','fontsize',22)
+ylabel("Success rate (%)",'fontsize',16)
+box off
+legend("Uniform","Dynamic protocol",'Location','northwest')
+legend("boxoff")
+pbaspect([2,1,1])
+saveas(gca,"w1dist_localization.svg")
