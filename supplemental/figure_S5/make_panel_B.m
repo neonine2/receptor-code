@@ -1,4 +1,4 @@
-function [] = make_panel_2C_old(fnamelist,mode)
+function [] = make_panel_B(fnamelist,mode)
 %% panel C
 
 X = categorical({'Soil','Tissue','Simple gradient'});
@@ -23,6 +23,6 @@ set(gca,'Linewidth',1.5,'xtick',[],'fontsize',16)
 box off
 pbaspect([3.2,1,1])
 ylabel('$\eta$','Interpreter','latex','fontsize',21)
-saveas(gca,"panel_1C.png")
+saveas(gca,"panel_B.svg")
 
 end

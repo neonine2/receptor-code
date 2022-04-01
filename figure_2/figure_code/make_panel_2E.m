@@ -28,7 +28,10 @@ for jj = 1:nenv
 ii = order(jj);
 jitterAmount = 5;
 jitterValuesX = rand(size(avgmat(:,ii)))*jitterAmount;   % +/-jitterAmount max
-jitterAmount = 0; %0.6
+jitterAmount = 0;
+if isequal(mode,"unif")
+    jitterAmount = 0.6;
+end
 jitterValuesZ = 1+(rand(size(avgmat(:,ii)))-0.5)*jitterAmount;   % +/-jitterAmount max
 scatter3(avgmat(:,ii) .* jitterValuesX,...
          sparsemat(:,ii),...
@@ -41,10 +44,30 @@ hold on
 end
 hold off
 
-zlim([0.002,30])
-xlim([0.01,7])
-ylim([0,0.5])
-set(gca,'LineWidth',1,'FontSize',14,'Xscale','log','Zscale','log');
+if isequal(mode,"expdiff")
+    zlim([0.002,30])
+    xlim([0.01,7])
+    ylim([0,0.5])
+elseif isequal(mode,"diff")
+    zlim([0.007,4])
+    xlim([0.01,7])
+    ylim([0,0.5])
+elseif isequal(mode,"ratio")
+    zlim([0,350])
+    xlim([0.05,5])
+    ylim([0,0.45])
+elseif isequal(mode,"unif")
+    zlim([0.007,4])
+    xlim([0.002,7])
+    ylim([0,0.5])
+end
+
+if isequal(mode,"ratio")
+    set(gca,'LineWidth',1,'FontSize',14,'Xscale','log');
+else
+    set(gca,'LineWidth',1,'FontSize',14,'Xscale','log','Zscale','log');
+end
+
 box off
 set(gcf,'color','w','PaperPositionMode', 'auto');
 grid off
