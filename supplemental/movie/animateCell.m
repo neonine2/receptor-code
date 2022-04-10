@@ -27,7 +27,7 @@ load('TissueColormap')
 
 disp(sum(sum(position(121,:,1:5:100,1))==0))
 disp(sum(sum(position(121,:,1:5:100,2))==0))
-for runind = 1:5:100 %[126,136,137,141,148,156,159]
+for runind = 1:5:10 %[126,136,137,141,148,156,159]
     flag = 0;
     initp = posUnif(1,:,runind);
     coord = combvec(xlimit,ylimit)' + initp;
@@ -110,4 +110,5 @@ for runind = 1:5:100 %[126,136,137,141,148,156,159]
     end
 end
 
+movie2gif(vidfile, 'sin.gif', 'LoopCount', 0, 'DelayTime', 0)
 close(vidfile)
